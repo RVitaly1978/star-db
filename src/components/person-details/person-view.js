@@ -1,5 +1,7 @@
 import React from 'react';
 
+import ErrorButton from '../error-button';
+
 const PersonView = ({ person }) => {
   const {
     id, name, gender, birthYear, eyeColor,
@@ -27,6 +29,7 @@ const PersonView = ({ person }) => {
             <span className='term'>Eye Color</span>
             <span>{eyeColor}</span>
           </li>
+          <ErrorButton />
         </ul>
       </div>
     </>
