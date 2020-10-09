@@ -2,25 +2,33 @@ import React, { Component } from 'react';
 
 import Header from '../header';
 import RandomPlanet from '../random-planet';
-import PeoplePage from '../people-page';
-import {
-  PersonList, PersonDetails,
-  PlanetList, PlanetDetails,
-  StarshipList, StarshipDetails,
-} from '../sw-components';
+import { PeoplePage } from '../pages';
 import ErrorButton from '../error-button';
 import ErrorBoundary from '../error-boundary';
+
 import { SwapiServiceProvider } from '../swapi-service-context';
 import SwapiService from '../../services/swapi-service';
+import DummySwapiService from '../../services/dummy-swapi-service';
 
 import './app.css';
 
 export default class App extends Component {
-  swapiService = new SwapiService();
-
   state = {
     showRandomPlanet: true,
+    swapiService: new SwapiService(),
   }
+
+  onServiceChange = () => {
+    this.setState(({ swapiService }) => {
+      const Service = swapiService instanceof SwapiService
+        ? DummySwapiService
+        : SwapiService;
+
+      return {
+        swapiService: new Service(),
+      };
+    });
+  };
 
   toggleRandomPlanet = () => {
     this.setState((state) => {
@@ -39,9 +47,9 @@ export default class App extends Component {
 
     return (
       <ErrorBoundary>
-        <SwapiServiceProvider value={this.swapiService}>
+        <SwapiServiceProvider value={this.state.swapiService}>
           <div className='stardb-app'>
-            <Header />
+            <Header onServiceChange={this.onServiceChange} />
             {planet}
 
             <div className='row mb2 button-row'>
@@ -53,9 +61,9 @@ export default class App extends Component {
               <ErrorButton />
             </div>
 
-            <PeoplePage List={PersonList} Details={PersonDetails} />
-            <PeoplePage List={PlanetList} Details={PlanetDetails} />
-            <PeoplePage List={StarshipList} Details={StarshipDetails} />
+            <ErrorBoundary>
+              <PeoplePage />
+            </ErrorBoundary>
           </div>
         </SwapiServiceProvider>
       </ErrorBoundary>

@@ -1,14 +1,13 @@
 import React from 'react';
 
-const PlanetView = ({ planet }) => {
-  const {
-    id, name, population, rotationPeriod, diameter,
-  } = planet;
-
+const PlanetView = ({
+  data: {id, name, population, rotationPeriod, diameter},
+  image,
+}) => {
   return (
     <>
       <img className='planet-image'
-        src={`https://starwars-visualguide.com/assets/img/planets/${id}.jpg`}
+        src={image}
         alt='planet'
       />
 
