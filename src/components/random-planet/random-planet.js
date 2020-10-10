@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import { withSwapiService } from '../hoc-helpers';
 
@@ -18,6 +19,10 @@ const mapMethodToProps = (swapiService) => {
 class RandomPlanet extends Component {
   static defaultProps = {
     updateInterval: 10000,
+  };
+
+  static propTypes = {
+    updateInterval: PropTypes.number,
   };
 
   state = {
