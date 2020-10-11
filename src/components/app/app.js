@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Header from '../header';
 import RandomPlanet from '../random-planet';
 import { PeoplePage, PlanetsPage, StarshipsPage } from '../pages';
+import { StarshipDetails } from '../sw-components';
 import ErrorButton from '../error-button';
 import ErrorBoundary from '../error-boundary';
 
@@ -70,7 +71,14 @@ export default class App extends Component {
                   render={() => <h2>Welcome to StarDB</h2>} />
                 <Route path='/people' component={PeoplePage} />
                 <Route path='/planets' component={PlanetsPage} />
-                <Route path='/starships' component={StarshipsPage} />
+                <Route path='/starships' exact component={StarshipsPage} />
+                <Route
+                  path='/starships/:id'
+                  render={({ match }) => {
+                    const { id } = match.params;
+                    return <StarshipDetails itemId={id} />
+                  }}
+                />
                 <Route render={() => <h2>404 in StarDB</h2>} />
               </Switch>
             </div>
