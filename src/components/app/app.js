@@ -3,7 +3,9 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import Header from '../header';
 import RandomPlanet from '../random-planet';
-import { PeoplePage, PlanetsPage, StarshipsPage } from '../pages';
+import {
+  PeoplePage, PlanetsPage, StarshipsPage, SecretPage, LoginPage,
+} from '../pages';
 import { StarshipDetails } from '../sw-components';
 import ErrorButton from '../error-button';
 import ErrorBoundary from '../error-boundary';
@@ -12,12 +14,20 @@ import { SwapiServiceProvider } from '../swapi-service-context';
 import SwapiService from '../../services/swapi-service';
 import DummySwapiService from '../../services/dummy-swapi-service';
 
+import './bootstrap.min.css';
 import './app.css';
 
 export default class App extends Component {
   state = {
-    showRandomPlanet: true,
-    swapiService: new SwapiService(),
+    showRandomPlanet: false,
+    swapiService: new DummySwapiService(),
+    isLoggedIn: false,
+  }
+
+  onLogin = () => {
+    this.setState({
+      isLoggedIn: true,
+    });
   }
 
   onServiceChange = () => {
@@ -41,7 +51,7 @@ export default class App extends Component {
   }
 
   render() {
-    const { showRandomPlanet } = this.state;
+    const { showRandomPlanet, isLoggedIn } = this.state;
 
     const planet = showRandomPlanet
       ? <RandomPlanet />
@@ -66,10 +76,9 @@ export default class App extends Component {
 
               <Switch>
                 <Route
-                  path='/'
-                  exact
+                  path='/' exact
                   render={() => <h2>Welcome to StarDB</h2>} />
-                <Route path='/people' component={PeoplePage} />
+                <Route path='/people/:id?' component={PeoplePage} />
                 <Route path='/planets' component={PlanetsPage} />
                 <Route path='/starships' exact component={StarshipsPage} />
                 <Route
@@ -79,6 +88,21 @@ export default class App extends Component {
                     return <StarshipDetails itemId={id} />
                   }}
                 />
+
+                <Route
+                  path='/secret'
+                  render={() => (
+                    <SecretPage isLoggedIn={isLoggedIn} />
+                  )} />
+
+                <Route
+                  path='/login'
+                  render={() => (
+                    <LoginPage
+                      isLoggedIn={isLoggedIn}
+                      onLogin={this.onLogin} />
+                  )} />
+
                 <Route render={() => <h2>404 in StarDB</h2>} />
               </Switch>
             </div>

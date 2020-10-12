@@ -6,8 +6,8 @@ import { StarshipList } from '../sw-components';
 import './pages.css';
 
 const StarshipsPage = ({ history }) => {
-  const onItemSelected = (itemId) => {
-    history.push(`/starships/${itemId}`);
+  const onItemSelected = (id) => {
+    history.push(`${id}`);
   };
 
   return (

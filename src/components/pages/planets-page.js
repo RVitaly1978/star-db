@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import Row from '../row';
 import { PlanetList, PlanetDetails } from '../sw-components';
+
 import './pages.css';
 
 export default class PlanetsPage extends Component {
